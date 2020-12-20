@@ -1,5 +1,0 @@
-::1 - - [27/Nov/2020:16:19:22 +0000] "PATCH /contacts/ HTTP/1.1" 200 172 "-" "PostmanRuntime/7.26.8"
-::1 - - [27/Nov/2020:16:19:28 +0000] "GET /contacts/ HTTP/1.1" 200 2237 "-" "PostmanRuntime/7.26.8"
-::1 - - [27/Nov/2020:16:20:53 +0000] "POST /contacts/ HTTP/1.1" 201 158 "-" "PostmanRuntime/7.26.8"
-::1 - - [27/Nov/2020:16:21:18 +0000] "GET /contacts/5fc12765d64f2031d4826f2b HTTP/1.1" 200 158 "-" "PostmanRuntime/7.26.8"
-::1 - - [27/Nov/2020:16:21:24 +0000] "DELETE /contacts/5fc12765d64f2031d4826f2b HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.8"
