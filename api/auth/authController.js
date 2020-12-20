@@ -1,8 +1,6 @@
 const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-require("dotenv").config();
 
 const UsersModel = require("./userModel");
 const { UnauthorizedError } = require("../helpers/errors.constructor");
@@ -15,6 +13,19 @@ class AuthController {
     return res.status(200).json(userForResponse);
   };
 
+  updateUser = async (req, res, next) => {
+    try {
+      console.log(req.body);
+      const { _id, ...data } = req.body;
+      const avatarPath = req.file.path;
+
+      const updatedUser = await UsersModel.updateUser(_id, data);
+      res.status(200).json(`'avatarUrl:' ${avatarPath}`);
+    } catch (e) {
+      next(e);
+    }
+  };
+
   registrationController = async (req, res, next) => {
     try {
       const { email } = req.body;
@@ -23,7 +34,7 @@ class AuthController {
         return res.status(409).send("'message': 'Email in use'");
       }
       const newUser = await UsersModel.createUser(req.body);
-      res.status(201).json("user:", newUser);
+      res.status(201).json(newUser);
     } catch (e) {
       next(e);
     }

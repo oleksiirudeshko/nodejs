@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const gravatar = require("gravatar");
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const SALT = 7;
@@ -22,6 +23,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["free", "pro", "premium"],
       default: "free",
+    },
+    avatarURL: {
+      type: String,
+      default: function () {
+        return gravatar.url(this.email, { s: "250" }, true);
+      },
     },
     token: { type: String, default: null },
   },
@@ -48,8 +55,15 @@ class User {
     return await this.db.findOne({ _id: id });
   };
 
+  updateUser = async (id, data) => {
+    return await this.db.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+  };
+
   createUser = async (data) => {
     const user = new this.db(data);
+    console.log(user);
     return user.save();
   };
 
