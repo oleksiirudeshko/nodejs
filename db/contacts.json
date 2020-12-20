@@ -12,6 +12,12 @@
     "phone": "(294) 840-6685"
   },
   {
+    "id": 3,
+    "name": "Cris",
+    "email": "chieff@yahoo.com",
+    "phone": "111-11-11"
+  },
+  {
     "id": 4,
     "name": "Wylie Pope",
     "email": "est@utquamvel.net",
@@ -55,12 +61,6 @@
   },
   {
     "id": 11,
-    "name": "Mango",
-    "email": "mango@gmail.com",
-    "phone": "322-22-22"
-  },
-  {
-    "id": 12,
     "name": "Mango",
     "email": "mango@gmail.com",
     "phone": "322-22-22"

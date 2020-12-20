@@ -1,28 +1,11 @@
-const argv = require("yargs").argv;
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const dotenv = require("dotenv");
+require("dotenv").config();
 
-const contacts = require("./contacts.js");
+const contactRouter = require("./api/contacts/contactRouters");
 
-function invokeAction({ action, id, name, email, phone }) {
-  switch (action) {
-    case "list":
-      contacts.listContacts().then((data) => console.log(data));
-      break;
+const ContactServer = require("./api/server");
 
-    case "get":
-      console.log(contacts.getContactById(id));
-      break;
-
-    case "add":
-      console.log(contacts.addContact(name, email, phone));
-      break;
-
-    case "remove":
-      console.log(contacts.removeContact(id));
-      break;
-
-    default:
-      console.warn("\x1B[31m Unknown action type!");
-  }
-}
-
-invokeAction(argv);
+new ContactServer().start();

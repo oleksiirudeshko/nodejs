@@ -20,22 +20,8 @@ async function removeContact(contactId) {
   fs.writeFile(contactsPath, JSON.stringify(newArr, null, 2));
 }
 
-async function addContact(name, email, phone) {
-  const arr = await listContacts();
-  let nextId = 1;
-  if (arr.length >= 1) {
-    const contactsIds = arr.map((el) => el.id);
-    nextId = Math.max(...contactsIds) + 1;
-  }
-
-  const newContact = {
-    id: nextId,
-    name: name,
-    email: email,
-    phone: phone,
-  };
-  arr.push(newContact);
-  await fs.writeFile(contactsPath, JSON.stringify(arr, null, 2));
+async function addContact(contacts) {
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
 }
 
 module.exports = { listContacts, addContact, removeContact, getContactById };
