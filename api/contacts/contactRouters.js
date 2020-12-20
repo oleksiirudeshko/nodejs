@@ -1,24 +1,25 @@
-const { Router } = require("express");
-const ContactController = require("./contactsController");
+const { Router } = require('express');
+
+const ContactController = require('./contactControllerMongo');
 
 const ContactRouter = Router();
 
-ContactRouter.get("/", ContactController.getContacts);
+ContactRouter.get('/', ContactController.getContactsController);
 
-ContactRouter.get("/:id", ContactController.getById);
+ContactRouter.get('/:contactId', ContactController.getContactByIdController);
 
 ContactRouter.post(
-  "/",
+  '/',
   ContactController.validateAddContact,
-  ContactController.addContact
+  ContactController.createContactController
 );
 
-ContactRouter.delete("/:id", ContactController.deleteContact);
+ContactRouter.delete('/:contactId', ContactController.deleteContactController);
 
 ContactRouter.patch(
-  "/:id",
+  '/',
   ContactController.validateUpdateContact,
-  ContactController.updateContact
+  ContactController.updateContactController
 );
 
 module.exports = ContactRouter;

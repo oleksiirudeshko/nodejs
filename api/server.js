@@ -1,13 +1,10 @@
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
-const cors = require("cors");
-const morgan = require("morgan");
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const cors = require('cors');
+const morgan = require('morgan');
 
-const dotenv = require("dotenv");
-require("dotenv").config();
-
-const contactRouter = require("./contacts/contactRouters");
+const contactRouter = require('./contacts/contactRouters');
 
 module.exports = class ContactServer {
   constructor() {
@@ -24,16 +21,16 @@ module.exports = class ContactServer {
   }
   initMiddlewares() {
     const accessLogStream = fs.createWriteStream(
-      path.join(__dirname, "access.log"),
-      { flags: "a" }
+      path.join(__dirname, 'access.log'),
+      { flags: 'a' }
     );
-    this.server.use(morgan("combined", { stream: accessLogStream }));
+    this.server.use(morgan('combined', { stream: accessLogStream }));
 
     this.server.use(express.json());
-    this.server.use(cors({ origin: "http://localhost:3000" }));
+    this.server.use(cors({ origin: 'http://localhost:3000' }));
   }
   initRoutes() {
-    this.server.use("/contacts", contactRouter);
+    this.server.use('/contacts', contactRouter);
   }
 
   startListening() {

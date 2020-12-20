@@ -1,11 +1,24 @@
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const dotenv = require("dotenv");
-require("dotenv").config();
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+require('dotenv').config();
 
-const contactRouter = require("./api/contacts/contactRouters");
+const ContactServer = require('./api/server');
 
-const ContactServer = require("./api/server");
+const options = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+};
 
-new ContactServer().start();
+const runServer = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URI, options);
+    console.log('Database connection successful');
+    new ContactServer().start();
+  } catch (e) {
+    process.exit(1);
+  }
+};
+
+runServer();
