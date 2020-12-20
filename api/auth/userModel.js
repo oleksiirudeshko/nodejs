@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema(
       },
     },
     token: { type: String, default: null },
+    verify: { type: Boolean, default: false },
+    verifyToken: { type: String, required: [true, "Verify token is required"] },
   },
   { versionKey: false }
 );
@@ -52,11 +54,17 @@ class User {
   };
 
   findById = async (id) => {
-    return await this.db.findOne({ _id: id });
+    const data = await this.db.findOne({ _id: id });
+    return data;
+  };
+
+  findByField = async (field) => {
+    const data = await this.db.findOne(field);
+    return data;
   };
 
   updateUser = async (id, data) => {
-    return await this.db.findByIdAndUpdate(id, data, {
+    return await this.db.findByIdAndUpdate({ _id: id }, data, {
       new: true,
     });
   };

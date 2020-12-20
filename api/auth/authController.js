@@ -1,9 +1,12 @@
 const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
 const UsersModel = require("./userModel");
+const emailService = require("../helpers/emailService");
 const { UnauthorizedError } = require("../helpers/errors.constructor");
+const ServEmail = new emailService();
 
 class AuthController {
   getUserController = async (req, res, next) => {
@@ -27,13 +30,20 @@ class AuthController {
   };
 
   registrationController = async (req, res, next) => {
+    const verifyToken = uuidv4();
+    const { email, name } = req.body;
     try {
-      const { email } = req.body;
+      await ServEmail.sendEmail(verifyToken, email, name);
+    } catch (e) {
+      console.log(e);
+      return res.status(503).send("Service is unavailable");
+    }
+    try {
       const user = await UsersModel.findByEmail(email);
       if (user) {
         return res.status(409).send("'message': 'Email in use'");
       }
-      const newUser = await UsersModel.createUser(req.body);
+      const newUser = await UsersModel.createUser({ ...req.body, verifyToken });
       res.status(201).json(newUser);
     } catch (e) {
       next(e);
@@ -49,6 +59,9 @@ class AuthController {
 
       if (!user || !isPasswordValid) {
         return res.status(401).send("Email or password is wrong");
+      }
+      if (!user.verify) {
+        return res.status(401).send("Email address is not verified");
       }
 
       const token = await UsersModel.login(user);
@@ -91,6 +104,27 @@ class AuthController {
       next();
     } catch (err) {
       next(err);
+    }
+  };
+
+  verify = async (req, res, next) => {
+    const token = req.params.token;
+
+    try {
+      const user = await UsersModel.findByField({ verifyToken: token });
+
+      if (user) {
+        const UserId = user._id;
+        await UsersModel.updateUser(UserId, {
+          verify: true,
+          verifyToken: null,
+        });
+        return res.status(200).json("Ok");
+      }
+      console.log("User not found");
+      res.status(404).json({ message: "User not found" });
+    } catch (e) {
+      next(e);
     }
   };
 

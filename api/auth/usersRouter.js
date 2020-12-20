@@ -1,20 +1,20 @@
-const { Router } = require('express');
-const upload = require('../helpers/multer.js');
-const moveFileToPublic = require('../helpers/moveFile');
+const { Router } = require("express");
+const upload = require("../helpers/multer.js");
+const moveFileToPublic = require("../helpers/moveFile");
 
-const AuthController = require('./authController');
+const AuthController = require("./authController");
 
 const UserRouter = Router();
 
 UserRouter.get(
-  '/current',
+  "/current",
   AuthController.authorize,
   AuthController.getUserController
 );
 
 UserRouter.patch(
-  '/avatar',
-  upload.single('avatar'),
+  "/avatar",
+  upload.single("avatar"),
   AuthController.authorize,
   moveFileToPublic,
   AuthController.updateUser
